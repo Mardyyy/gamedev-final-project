@@ -13,6 +13,13 @@ public class WaveManager : MonoBehaviour
     private int waveNumber = 0;
     public TMPro.TextMeshProUGUI waveText;
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     public void AddSpawnedObject(GameObject obj)
     {
         if (obj != null)
@@ -75,6 +82,7 @@ public class WaveManager : MonoBehaviour
         }
 
         Debug.Log($"Wave {waveNumber} complete. All enemies destroyed. Next wave in 3 seconds...");
+        audioManager.PlaySFX(audioManager.roundEnd);
         yield return new WaitForSeconds(3f);
 
         
@@ -96,6 +104,7 @@ public class WaveManager : MonoBehaviour
         }
 
         spawnMonsters.SpawnAtRandomPoint(waveNumber);
+        audioManager.PlaySFX(audioManager.roundStart);
         waveOverTriggered = false;
     }
 }

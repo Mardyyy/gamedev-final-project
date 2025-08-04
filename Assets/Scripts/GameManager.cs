@@ -6,6 +6,13 @@ public class GameManager : MonoBehaviour
 {
 
     public Creature playerCreature;
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +25,7 @@ public class GameManager : MonoBehaviour
         if (!playerCreature.IsAlive())
         {
             Debug.Log("Game Over!");
+            audioManager.PlaySFX(audioManager.playerDeath);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 1f; // Ensure time resumes

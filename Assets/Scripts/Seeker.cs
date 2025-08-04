@@ -14,6 +14,13 @@ public class Seeker : MonoBehaviour
 
     private int currentHealth;
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         cc = GetComponent<CharacterController>();
@@ -32,6 +39,7 @@ public class Seeker : MonoBehaviour
         {
             Debug.Log("Seeker died!");
             ObjectPool.Instance.ReturnToPool(gameObject);
+            audioManager.PlaySFX(audioManager.enemyDeath);
             return;  // Stop update if dead
         }
 
