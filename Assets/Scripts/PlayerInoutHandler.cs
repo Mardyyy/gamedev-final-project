@@ -22,15 +22,42 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Awake()
     {
-        controls.Add("foward", KeyCode.W);
-        controls.Add("backward", KeyCode.S);
-        controls.Add("left", KeyCode.A);
-        controls.Add("right", KeyCode.D);
-        controls.Add("jump", KeyCode.Space);
-        controls.Add("crouch", KeyCode.LeftControl);
-        controls.Add("shoot", KeyCode.Mouse0);
-        controls.Add("aim", KeyCode.Mouse1);
-        controls.Add("reload", KeyCode.R);
+        // controls.Add("foward", KeyCode.W);
+        // controls.Add("backward", KeyCode.S);
+        // controls.Add("left", KeyCode.A);
+        // controls.Add("right", KeyCode.D);
+        // controls.Add("jump", KeyCode.Space);
+        // controls.Add("crouch", KeyCode.LeftControl);
+        // controls.Add("shoot", KeyCode.Mouse0);
+        // controls.Add("aim", KeyCode.Mouse1);
+        // controls.Add("reload", KeyCode.R);
+
+        string[] keys = { "foward", "backward", "left", "right", "jump", "crouch", "shoot", "aim", "reload" };
+
+        foreach (string key in keys)
+        {
+            if (PlayerPrefs.HasKey(key))
+            {
+                KeyCode savedKey = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(key));
+                controls[key] = savedKey;
+            }
+            else
+            {
+                // Set defaults if not already saved
+                switch (key)
+                {
+                    case "foward": controls[key] = KeyCode.W; break;
+                    case "backward": controls[key] = KeyCode.S; break;
+                    case "left": controls[key] = KeyCode.A; break;
+                    case "right": controls[key] = KeyCode.D; break;
+                    case "jump": controls[key] = KeyCode.Space; break;
+                    case "crouch": controls[key] = KeyCode.LeftControl; break;
+                    case "shoot": controls[key] = KeyCode.Mouse0; break;
+                    case "aim": controls[key] = KeyCode.Mouse1; break;
+                    case "reload": controls[key] = KeyCode.R; break;
+                }
+            }
+        }
 
     }
 
@@ -41,6 +68,9 @@ public class PlayerInputHandler : MonoBehaviour
 
         // Initialize button texts with current keybinds
         UpdateAllButtonTexts();
+
+        //Add this temporarily in if needed for development reset.
+        //PlayerPrefs.DeleteAll();
     }
 
     // Update is called once per frame
@@ -115,6 +145,8 @@ public class PlayerInputHandler : MonoBehaviour
                 if (Input.GetKeyDown(key))
                 {
                     controls[control_name] = key;
+                    PlayerPrefs.SetString(control_name, key.ToString());
+                    PlayerPrefs.Save(); // optional, forces immediate save to disk
                     listening = false;
 
                     // Update only the button corresponding to the changed control
@@ -135,6 +167,7 @@ public class PlayerInputHandler : MonoBehaviour
                 }
             }
         }
+        
         //---------------
     }
 
@@ -182,6 +215,13 @@ public class PlayerInputHandler : MonoBehaviour
         {
             Debug.LogWarning($"Control '{control}' does not exist in controls dictionary.");
         }
+    }
+
+    public void ResetKeybinds()
+    {
+        PlayerPrefs.DeleteAll(); // WARNING: deletes all saved keys
+        Awake(); // Re-initialize controls
+        UpdateAllButtonTexts(); // Update UI
     }
 
     // Helper to initialize all button labels on Start()
