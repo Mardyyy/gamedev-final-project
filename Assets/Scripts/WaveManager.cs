@@ -82,7 +82,7 @@ public class WaveManager : MonoBehaviour
         }
 
         Debug.Log($"Wave {waveNumber} complete. All enemies destroyed. Next wave in 3 seconds...");
-        audioManager.PlaySFX(audioManager.roundEnd);
+        audioManager.PlayRoundSFX(audioManager.roundEnd);
         yield return new WaitForSeconds(3f);
 
         
@@ -104,7 +104,7 @@ public class WaveManager : MonoBehaviour
         }
 
         spawnMonsters.SpawnAtRandomPoint(waveNumber);
-        audioManager.PlaySFX(audioManager.roundStart);
+        audioManager.PlayRoundSFX(audioManager.roundStart);
         waveOverTriggered = false;
     }
 }

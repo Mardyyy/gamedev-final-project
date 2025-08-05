@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
     [Header("--------- Audio Source ----------")]
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource SFXSource;
+    [SerializeField] AudioSource roundSFXSource;
 
     [Header("------- Audio Clip -------")]
     public AudioClip background;
@@ -28,5 +29,10 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
+    }
+
+    public void PlayRoundSFX(AudioClip clip)
+    {
+        roundSFXSource.PlayOneShot(clip); 
     }
 }
