@@ -22,6 +22,8 @@ public class GunSystem : MonoBehaviour
     public Transform attackPoint;
     public RaycastHit rayHit;
     public LayerMask whatIsEnemy;
+    private PlayerInputHandler inputHandler;
+
 
     // Sound
     public AudioSource audioSource;
@@ -40,6 +42,8 @@ public class GunSystem : MonoBehaviour
     {
         bulletsLeft = magazineSize;
         readyToShoot = true;
+        inputHandler = FindObjectOfType<PlayerInputHandler>();
+
     }
     private void Update()
     {
@@ -55,18 +59,28 @@ public class GunSystem : MonoBehaviour
             fpsCam.transform.rotation,
             Time.deltaTime * 10f
         );
+
+        // if (inputHandler != null && Input.GetKey(inputHandler.controls["aim"]))
+        // {
+        //     // Optional: set aiming animation / zoom / crosshair
+        // }
     }
     private void MyInput()
     {
-        if (allowButtonHold) shooting = Input.GetKey(KeyCode.Mouse0);
-        else shooting = Input.GetKeyDown(KeyCode.Mouse0);
+        if (inputHandler == null) return;
 
+        KeyCode shootKey = inputHandler.controls["shoot"];
+        KeyCode reloadKey = inputHandler.controls["reload"];
 
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) Reload();
+        if (allowButtonHold) shooting = Input.GetKey(shootKey);
+        else shooting = Input.GetKeyDown(shootKey);
 
+        if (Input.GetKeyDown(reloadKey) && bulletsLeft < magazineSize && !reloading)
+            Reload();
 
-        //Shoot
-        if (readyToShoot && shooting && !reloading && bulletsLeft > 0){
+        // Shoot
+        if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
+        {
             bulletsShot = bulletsPerTap;
             Shoot();
         }

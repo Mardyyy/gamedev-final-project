@@ -6,15 +6,27 @@ public class ADS : MonoBehaviour
     public Transform defaultPosition;         // Hip-fire position (local)
     public Transform aimDownSightsPosition;   // ADS position (local)
     public GameObject crosshair;              // UI crosshair
+    private PlayerInputHandler inputHandler;
+
 
     [Header("Settings")]
     public float aimSpeed = 10f;
 
     private bool isAiming = false;
 
+    private void Awake()
+    {
+        inputHandler = FindObjectOfType<PlayerInputHandler>();
+
+    }
+
     void Update()
     {
-        isAiming = Input.GetMouseButton(1);
+        if (inputHandler != null && inputHandler.controls.ContainsKey("aim"))
+        {
+            isAiming = Input.GetKey(inputHandler.controls["aim"]);
+        }
+
 
         if (isAiming)
         {

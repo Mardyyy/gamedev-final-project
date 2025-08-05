@@ -13,6 +13,8 @@ public class PauseMenu : MonoBehaviour
     public Button quitButton;
     public Button optionsButton;
     public GameObject optionsMenuUI;
+    public Button keyBindsButton;
+    public GameObject keyBindsMenuUI;
     public TMPro.TMP_Dropdown resolutionDropdown;
     public static bool isPaused = false;
 
@@ -27,6 +29,7 @@ public class PauseMenu : MonoBehaviour
         resumeButton.onClick.AddListener(Resume);
         quitButton.onClick.AddListener(QuitGame);
         optionsButton.onClick.AddListener(OpenOptions);
+        keyBindsButton.onClick.AddListener(OpenKeyBinds);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -74,6 +77,8 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             else if (optionsMenuUI.activeSelf)
                 BackFromOptions(); // ESC while in options returns to pause menu
+            else if (keyBindsMenuUI.activeSelf)
+                BackFromKeyBinds(); // ESC while in keybinds returns to options menu
         }
     }
 
@@ -82,6 +87,7 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("Resume clicked");
         pauseMenuUI.SetActive(false);
         optionsMenuUI.SetActive(false);
+        keyBindsMenuUI.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
 
@@ -93,8 +99,9 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
-        pauseMenuUI.SetActive(true);
-        optionsMenuUI.SetActive(false); // only pause menu shows
+        pauseMenuUI.SetActive(true); // only pause menu shows
+        optionsMenuUI.SetActive(false); 
+        keyBindsMenuUI.SetActive(false); 
         Time.timeScale = 0f;
         isPaused = true;
 
@@ -116,12 +123,25 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         optionsMenuUI.SetActive(true);
     }
-
     public void BackFromOptions()
     {
         Debug.Log("Back from options");
         optionsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
+    }
+
+    public void OpenKeyBinds()
+    {
+        Debug.Log("KeyBinds clicked");
+        optionsMenuUI.SetActive(false);
+        keyBindsMenuUI.SetActive(true);
+    }
+
+    public void BackFromKeyBinds()
+    {
+        Debug.Log("Back from keybinds");
+        keyBindsMenuUI.SetActive(false);
+        optionsMenuUI.SetActive(true);
     }
 
     void SetResolution(int resolutionIndex)
