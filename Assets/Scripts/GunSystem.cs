@@ -28,6 +28,8 @@ public class GunSystem : MonoBehaviour
     // Sound
     public AudioSource audioSource;
     public AudioClip shootingSound;
+    public AudioClip reloadSound;
+
 
 
 
@@ -142,6 +144,13 @@ public class GunSystem : MonoBehaviour
     private void Reload()
     {
         reloading = true;
+
+        // Play reload sound
+        if (reloadSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(reloadSound);
+        }
+
         Invoke("ReloadFinished", reloadTime);
     }
     private void ReloadFinished()

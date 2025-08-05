@@ -83,7 +83,7 @@ public class WaveManager : MonoBehaviour
 
         Debug.Log($"Wave {waveNumber} complete. All enemies destroyed. Next wave in 3 seconds...");
         audioManager.PlayRoundSFX(audioManager.roundEnd);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(7f);
 
         
         spawnedObjects.Clear();
@@ -103,8 +103,12 @@ public class WaveManager : MonoBehaviour
             Debug.LogWarning("ObjectPool.Instance or prefab is null. Cannot expand pool.");
         }
 
-        spawnMonsters.SpawnAtRandomPoint(waveNumber);
+        
         audioManager.PlayRoundSFX(audioManager.roundStart);
+        yield return new WaitForSeconds(3f);
+
+        spawnMonsters.SpawnAtRandomPoint(waveNumber);
+
         waveOverTriggered = false;
     }
 }
