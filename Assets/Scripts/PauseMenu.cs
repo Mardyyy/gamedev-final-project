@@ -120,8 +120,30 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("Quit clicked");
         //Application.Quit();
+
+        DisablePanel(optionsMenuUI);
+        //if (deathScreenUI != null) deathScreenUI.SetActive(false);
+        
+        //if (mainMenuUI != null) mainMenuUI.SetActive(true);
+
         SceneManager.LoadScene("MainMenu");
     }
+
+    void DisablePanel(GameObject panel)
+    {
+        if (panel == null) return;
+
+        panel.SetActive(false);
+
+        CanvasGroup cg = panel.GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
+            cg.alpha = 0f;
+        }
+    }
+
 
     public void OpenOptions()
     {

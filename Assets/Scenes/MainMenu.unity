@@ -388,6 +388,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292569238}
   m_CullTransparentMesh: 1
+--- !u!1 &321589452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 321589454}
+  - component: {fileID: 321589453}
+  m_Layer: 0
+  m_Name: DifficultyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &321589453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321589452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a11eab49b218614eaaabae6ab2f5509, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentDifficulty: 1
+--- !u!4 &321589454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321589452}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.64039, y: 0, z: 3.52123}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &342448129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,7 +1542,7 @@ GameObject:
   - component: {fileID: 1208072953}
   - component: {fileID: 1208072952}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: MainMenuCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1707,9 +1752,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1233367208}
   - component: {fileID: 1233367207}
-  - component: {fileID: 1233367209}
   m_Layer: 0
-  m_Name: MainMenuHandler
+  m_Name: MainMenuManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1728,6 +1772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficultyDropdown: {fileID: 769325182}
+  playButton: {fileID: 123329941}
 --- !u!4 &1233367208
 Transform:
   m_ObjectHideFlags: 0
@@ -1743,19 +1788,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1233367209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233367206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a11eab49b218614eaaabae6ab2f5509, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentDifficulty: 1
 --- !u!1 &1350130089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,7 +2491,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 1841636110}
   - {fileID: 1715386059}
+  - {fileID: 1233367208}
   - {fileID: 1208072955}
   - {fileID: 1350130092}
-  - {fileID: 1233367208}
   - {fileID: 1072810379}
+  - {fileID: 321589454}

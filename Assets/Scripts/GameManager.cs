@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         deathHandled = true;
         Debug.Log("Game Over!");
-        audioManager.PlaySFX(audioManager.playerDeath);
+        audioManager.PlayRoundSFX(audioManager.playerDeath);
 
         Time.timeScale = 0f; // Pause the game
         Cursor.lockState = CursorLockMode.None;
@@ -69,6 +69,16 @@ public class GameManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         Time.timeScale = 1f;
+
+        //destroy persistent objects that shouldn't carry over
+        GameObject music = GameObject.Find("MainMenuMusic");
+        if (music != null) Destroy(music);
+
+        //if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (deathScreenUI != null) deathScreenUI.SetActive(false);
+        
+        //if (mainMenuUI != null) mainMenuUI.SetActive(true);
+
         SceneManager.LoadScene("MainMenu");
     }
 
