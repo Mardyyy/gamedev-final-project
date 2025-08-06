@@ -30,7 +30,8 @@ public class Seeker : MonoBehaviour
     void OnEnable()
     {
         spawnTime = Time.time;
-        currentHealth = maxHealth;  // Reset health on respawn
+        ApplyDifficultySettings();
+        // currentHealth = maxHealth;  // Reset health on respawn
     }
 
     void Update()
@@ -47,12 +48,71 @@ public class Seeker : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Seeker hit something??");
+        // Debug.Log("Seeker hit something??");
+        // if (other.GetComponent<Creature>() != null)
+        // {
+        //     other.GetComponent<Creature>().TakeDamage(1);
+        // }
+
         if (other.GetComponent<Creature>() != null)
         {
-            other.GetComponent<Creature>().TakeDamage(1);
+            int damage = 1;
+
+            if (DifficultyManager.Instance != null)
+            {
+                switch (DifficultyManager.Instance.currentDifficulty)
+                {
+                    case DifficultyManager.Difficulty.Easy:
+                        damage = 1;
+                        break;
+                    case DifficultyManager.Difficulty.Normal:
+                        damage = 2;
+                        break;
+                    case DifficultyManager.Difficulty.Hard:
+                        damage = 3;
+                        break;
+                }
+            }
+
+            other.GetComponent<Creature>().TakeDamage(damage);
         }
+
     }
+
+    void ApplyDifficultySettings()
+    {
+        if (DifficultyManager.Instance == null)
+        {
+            Debug.LogWarning("DifficultyManager not found!");
+            return;
+        }
+
+        var difficulty = DifficultyManager.Instance.currentDifficulty;
+
+        // Easy: enemies have low HP, move slower, do less damage
+        // Normal: your current default behavior
+        // Hard: more HP, move faster, hit harder
+        switch (difficulty)
+        {
+            case DifficultyManager.Difficulty.Easy:
+                maxHealth = 3;
+                speed = 1.5f;
+                break;
+
+            case DifficultyManager.Difficulty.Normal:
+                maxHealth = 5;
+                speed = 2f;
+                break;
+
+            case DifficultyManager.Difficulty.Hard:
+                maxHealth = 8;
+                speed = 2.8f;
+                break;
+        }
+
+        currentHealth = maxHealth;
+    }
+
 
     public void SimulateGravity()
     {

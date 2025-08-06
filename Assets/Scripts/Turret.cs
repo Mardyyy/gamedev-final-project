@@ -48,7 +48,7 @@ public class Turret : MonoBehaviour
 
         if (turretEnabled)
         {
-            Debug.Log("Turret Enabled - waiting to shoot");
+            //Debug.Log("Turret Enabled - waiting to shoot");
             if (shootTimer >= shootCooldown)
             {
                 Shoot();
@@ -57,7 +57,7 @@ public class Turret : MonoBehaviour
         }
         else
         {
-            Debug.Log("Turret Disabled - no shooting");
+            //Debug.Log("Turret Disabled - no shooting");
         }
     }
 

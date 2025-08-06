@@ -15,9 +15,15 @@ public class WaveManager : MonoBehaviour
 
     AudioManager audioManager;
 
+    private DifficultyManager.Difficulty difficulty;
+
+
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
+        difficulty = DifficultyManager.Instance.currentDifficulty;
+
     }
 
     public void AddSpawnedObject(GameObject obj)
@@ -35,6 +41,8 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Current Difficulty: " + difficulty);
+
         if (spawnMonsters == null)
             Debug.LogWarning("spawnMonsters not assigned in WaveManager!");
         else
@@ -88,7 +96,24 @@ public class WaveManager : MonoBehaviour
         
         spawnedObjects.Clear();
 
-        int enemiesToSpawn = 3 + (waveNumber - 1) * 2;
+        // int enemiesToSpawn = 3 + (waveNumber - 1) * 2;
+        int enemiesToSpawn;
+        switch (difficulty)
+        {
+            case DifficultyManager.Difficulty.Easy:
+                enemiesToSpawn = 2 + (waveNumber - 1) * 1; // slower ramp up
+                break;
+            case DifficultyManager.Difficulty.Normal:
+                enemiesToSpawn = 3 + (waveNumber - 1) * 2; // current behavior
+                break;
+            case DifficultyManager.Difficulty.Hard:
+                enemiesToSpawn = 5 + (waveNumber - 1) * 3; // faster ramp up
+                break;
+            default:
+                enemiesToSpawn = 3 + (waveNumber - 1) * 2;
+                break;
+        }
+
 
         if (ObjectPool.Instance != null && ObjectPool.Instance.prefab != null)
         {
