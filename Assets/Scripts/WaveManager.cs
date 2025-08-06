@@ -16,7 +16,7 @@ public class WaveManager : MonoBehaviour
     AudioManager audioManager;
 
     private DifficultyManager.Difficulty difficulty;
-    public static int CurrentWave { get; private set; }
+    public static int CurrentWave { get; set; }
 
 
 
@@ -24,7 +24,8 @@ public class WaveManager : MonoBehaviour
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
-        
+        // 💥 Ensure CurrentWave starts at 1 on scene load
+        CurrentWave = 1;
 
     }
 

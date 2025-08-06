@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        WaveManager.CurrentWave = 1; //Reset the static wave value
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

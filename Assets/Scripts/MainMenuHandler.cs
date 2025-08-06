@@ -64,6 +64,7 @@ public class MainMenuHandler : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Play button clicked"); // <== Confirm this shows up in console
+        WaveManager.CurrentWave = 1; // 🔧 Reset the static wave value
         Time.timeScale = 1f;
         GameObject music = GameObject.Find("MainMenuMusic");
         if (music != null)
