@@ -17,6 +17,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject keyBindsMenuUI;
     public TMPro.TMP_Dropdown resolutionDropdown;
     public static bool isPaused = false;
+    public GameObject gameplayHUD;
 
     private Resolution[] resolutions;
 
@@ -91,6 +92,8 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
+        if (gameplayHUD != null)
+        gameplayHUD.SetActive(true);
 
         // 🔒 Lock cursor again
         Cursor.lockState = CursorLockMode.Locked;
@@ -104,6 +107,9 @@ public class PauseMenu : MonoBehaviour
         keyBindsMenuUI.SetActive(false); 
         Time.timeScale = 0f;
         isPaused = true;
+
+        if (gameplayHUD != null)
+        gameplayHUD.SetActive(false);
 
         // Show cursor so player can click UI
         Cursor.lockState = CursorLockMode.None;

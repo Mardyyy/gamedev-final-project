@@ -24,7 +24,7 @@ public class WaveManager : MonoBehaviour
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
-        difficulty = DifficultyManager.Instance.currentDifficulty;
+        
 
     }
 
@@ -43,6 +43,15 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        if (DifficultyManager.Instance != null)
+        {
+            difficulty = DifficultyManager.Instance.currentDifficulty;
+        }
+        else
+        {
+            Debug.LogError("DifficultyManager.Instance is null!");
+        }
+
         Debug.Log("Current Difficulty: " + difficulty);
 
         if (spawnMonsters == null)

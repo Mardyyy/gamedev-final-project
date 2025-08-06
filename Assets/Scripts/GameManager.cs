@@ -6,7 +6,11 @@ public class GameManager : MonoBehaviour
 {
 
     public Creature playerCreature;
+    public GameObject deathScreenUI;
+    private bool deathHandled = false;
     AudioManager audioManager;
+    public GameObject gameplayHUD;
+
 
     private void Awake()
     {
@@ -16,23 +20,61 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        Time.timeScale = 1f; // Ensure game is running
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!playerCreature.IsAlive())
+        if (!playerCreature.IsAlive() && !deathHandled)
         {
-            Debug.Log("Game Over!");
-            audioManager.PlaySFX(audioManager.playerDeath);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            Time.timeScale = 1f; // Ensure time resumes
-            SceneManager.LoadScene("MainMenu"); //Reload Specific scene
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Reloads current scene
+            HandleDeath();
+
         }
 
+    }
+
+    void HandleDeath()
+    {
+        deathHandled = true;
+        Debug.Log("Game Over!");
+        audioManager.PlaySFX(audioManager.playerDeath);
+
+        Time.timeScale = 0f; // Pause the game
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (gameplayHUD != null)
+        {
+            gameplayHUD.SetActive(false);
+        }
+
+
+        if (deathScreenUI != null)
+        {
+            deathScreenUI.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Death Screen UI not assigned in GameManager.");
+        }
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
     
 
