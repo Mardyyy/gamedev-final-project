@@ -16,6 +16,8 @@ public class WaveManager : MonoBehaviour
     AudioManager audioManager;
 
     private DifficultyManager.Difficulty difficulty;
+    public static int CurrentWave { get; private set; }
+
 
 
     private void Awake()
@@ -52,6 +54,8 @@ public class WaveManager : MonoBehaviour
         if (waveText != null)
             waveText.text = "Wave 1"; // Start display at wave 1 since first wave spawns as wave 1
         waveNumber = 1;
+        CurrentWave = waveNumber;
+
     }
 
     void Update()
@@ -82,6 +86,7 @@ public class WaveManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f); // small delay to avoid race conditions
 
         waveNumber++;
+        CurrentWave = waveNumber;
 
         // Update wave number display
         if (waveText != null)

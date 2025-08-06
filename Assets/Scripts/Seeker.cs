@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro; // If using TextMeshPro
 
 public class Seeker : MonoBehaviour
 {
@@ -16,6 +18,17 @@ public class Seeker : MonoBehaviour
 
     AudioManager audioManager;
 
+    //----------Health Bar/Slider
+    public GameObject healthBarPrefab;
+    private GameObject healthBarInstance;
+    private Slider healthSlider;
+    private TextMeshProUGUI healthText; // or use Text if you're not using TMP
+
+    public Vector3 healthBarOffset = new Vector3(0, 2f, 0);
+
+    //---------------
+
+
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -25,23 +38,91 @@ public class Seeker : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         currentHealth = maxHealth;
+
+        // if (healthBarInstance != null)
+        // {
+        //     // Scale the entire health bar
+        //     //healthBarInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // Adjust as needed
+        // }
+
     }
 
     void OnEnable()
     {
         spawnTime = Time.time;
         ApplyDifficultySettings();
-        // currentHealth = maxHealth;  // Reset health on respawn
+        currentHealth = maxHealth;
+
+        // Clean up old health bar if somehow still present
+        if (healthBarInstance != null)
+        {
+            Destroy(healthBarInstance);
+            healthBarInstance = null;
+        }
+
+        // Spawn new health bar
+        if (healthBarPrefab != null)
+        {
+            healthBarInstance = Instantiate(healthBarPrefab, transform.position + healthBarOffset, Quaternion.identity);
+
+            healthSlider = healthBarInstance.GetComponentInChildren<Slider>();
+            healthText = healthBarInstance.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        currentHealth = maxHealth;
+
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = $"{currentHealth} / {maxHealth}";
+        }
+
+        UpdateHealthUI();
+
     }
+
+    private void OnDisable()
+    {
+        if (healthBarInstance != null)
+        {
+            Destroy(healthBarInstance);
+            healthBarInstance = null;
+        }
+    }
+
 
     void Update()
     {
         if (!IsAlive())
         {
             Debug.Log("Seeker died!");
+
+            if (healthBarInstance != null)
+            {
+                Destroy(healthBarInstance);
+            }
+
             ObjectPool.Instance.ReturnToPool(gameObject);
             audioManager.PlaySFX(audioManager.enemyDeath);
             return;  // Stop update if dead
+        }
+
+        // Follow enemy
+        if (healthBarInstance != null)
+        {
+            // healthBarInstance.transform.position = transform.position + Vector3.up * 2f;
+            healthBarInstance.transform.position = transform.position + healthBarOffset;
+
+
+            // Optionally face camera
+            Camera cam = Camera.main;
+            if (cam != null)
+                healthBarInstance.transform.LookAt(healthBarInstance.transform.position + cam.transform.forward);
         }
 
     }
@@ -87,6 +168,7 @@ public class Seeker : MonoBehaviour
             return;
         }
 
+        int round = Mathf.Max(1, WaveManager.CurrentWave);
         var difficulty = DifficultyManager.Instance.currentDifficulty;
 
         // Easy: enemies have low HP, move slower, do less damage
@@ -95,22 +177,36 @@ public class Seeker : MonoBehaviour
         switch (difficulty)
         {
             case DifficultyManager.Difficulty.Easy:
-                maxHealth = 3;
+                maxHealth = 2 + round; // +1 health per wave
                 speed = 1.5f;
                 break;
 
             case DifficultyManager.Difficulty.Normal:
-                maxHealth = 5;
+                maxHealth = 3 + round * 2; // +2 health per wave
                 speed = 2f;
                 break;
 
             case DifficultyManager.Difficulty.Hard:
-                maxHealth = 8;
+                maxHealth = 5 + round * 3; // +3 health per wave
                 speed = 2.8f;
                 break;
         }
 
         currentHealth = maxHealth;
+        
+        
+    }
+
+    void UpdateHealthUI()
+    {
+        if (healthSlider != null)
+            healthSlider.maxValue = maxHealth;
+
+        if (healthSlider != null)
+            healthSlider.value = currentHealth;
+
+        if (healthText != null)
+            healthText.text = $"{currentHealth} / {maxHealth}";
     }
 
 
@@ -134,6 +230,14 @@ public class Seeker : MonoBehaviour
         {
             currentHealth = 0;
             // Optionally trigger death animation or events here
+        }
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+        if (healthText != null)
+        {
+            healthText.text = $"{currentHealth} / {maxHealth}";
         }
     }
 

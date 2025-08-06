@@ -19187,6 +19187,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4948082961716824015, guid: 84d275b20bb467e4a88a96fd873ebe83, type: 3}
+      propertyPath: healthBarPrefab
+      value: 
+      objectReference: {fileID: 3120907919409019195, guid: bdd4a54cd51474547ab1d4b06712125b, type: 3}
+    - target: {fileID: 4948082961716824015, guid: 84d275b20bb467e4a88a96fd873ebe83, type: 3}
       propertyPath: targetTransform
       value: 
       objectReference: {fileID: 3839437057491245235}
